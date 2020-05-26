@@ -1,0 +1,34 @@
+/* 
+Theme: Liberty Swarm (Main)
+Author: Dominick Piaquadio
+Version: 1.0
+*/
+
+html{
+	margin:0;
+}
+
+table{
+	text-align:center;
+	border:1px solid black;
+	margin:2% 0;
+}
+
+table th, table td{
+	border:1px dotted black;
+}
+
+#entityList{
+	width:30%;
+	margin-left:10%;
+	float:left;
+}
+
+#game{
+	width:50%;
+	height:100%;
+	float:left;
+	margin-right:10%;
+	background-color:black;
+}
+

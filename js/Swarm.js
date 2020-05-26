@@ -74,7 +74,7 @@ function main(){
     function entityInfo(entity){
         for (e=0; e < entity.length; e++){
           if (entity[e].id.includes("p")){
-                $('#players').append("<tr><td>" + entity[e].id + "</td><td>" + entity[e].x + "</td><td>" + entity[e].y + "</td>");
+                $('#players').append("<tr id='"+ entity[e].id +"'><td>" + entity[e].id + "</td><td>" + entity[e].x + "</td><td>" + entity[e].y + "</td>");
             }
             else if (entity[e].id.includes("z")){
                 $('#zombies').append("<tr><td>" + entity[e].id + "</td><td>" + entity[e].x + "</td><td>" + entity[e].y + "</td>");
@@ -85,11 +85,16 @@ function main(){
 
     entityInfo(sprites);
 
-    console.log(sprites);
+    // Manipulate Player Instance
+    var player = $('#p1408');
 
-    console.log(sprites.length);
+    // -- Debugging -- //
 
-    console.log(sprites[0].id + " " + sprites[0].x + " " + sprites[0].y);
+    //console.log(sprites);
+
+    //console.log(sprites.length);
+
+    //console.log(sprites[0].id + " " + sprites[0].x + " " + sprites[0].y);
     //updatePos Test
     //var myChar = new Player("p1776", 100, 100);
     //updatePos(myChar.id, myChar.x, myChar.y);

@@ -3,19 +3,22 @@
 		<title>Liberty Swarm</title>
 		<script type="text/javascript" src="js/jquery-3.4.1.js"></script>
 		<script type="text/javascript" src="loadScripts.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
 	</head>
 	<body>
-		<ul id="entityList"></ul>
-		<table id="players">
-			<tr>
-				<th>Player</th><th>X Coord</th><th>Y Coord</th>
-			</tr>
-		</table>
-		<table id="zombies">
-			<tr>
-				<th>Zombies</th><th>X Coord</th><th>Y Coord</th>
-			</tr>			
-		</table>
+		<div id="entityList">
+			<table id="players">
+				<tr>
+					<th>Player</th><th>X Coord</th><th>Y Coord</th>
+				</tr>
+			</table>
+			<table id="zombies">
+				<tr>
+					<th>Zombies</th><th>X Coord</th><th>Y Coord</th>
+				</tr>			
+			</table>	
+		</div>
+		<canvas id="game"></canvas>
 		<script>loadScripts();</script>
 	</body>
 </html>
