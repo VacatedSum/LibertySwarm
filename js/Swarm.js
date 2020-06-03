@@ -2,7 +2,9 @@
 //Steve Cina, May 2020
 
 function main(){
-    var URL = "http://192.168.1.7";
+    var host = "http://192.168.1.7";
+    var port = "9081";
+    var URL = host + ":" + port + "/Swarm";
 
     //This class creats all of the 'NPC' sprites.
     //This includes Zombies AND other (remote) players
@@ -30,7 +32,7 @@ function main(){
     //This should be called every frame to track Zombie movements
     function getBoard(){
         var sprites2 = [];
-        var getUrl = URL + ":9081/Swarm";
+        var getUrl = URL;
         var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -52,17 +54,18 @@ function main(){
     //This should be called every frame. The Rest call within
     //is what triggers the zombies to actually move on the backend.
     function updatePos(id, x, y){
-        var putUrl = URL + ":9081/Swarm?id=" + id + "&newX=" + x + "&newY=" + y;
+        var putUrl = URL + "?id=" + id + "&newX=" + x + "&newY=" + y;
+        console.log(putUrl);
         var xhttp = new XMLHttpRequest();
         xhttp.open("PUT", putUrl, true);
-        xhttp.send();
-    }
+        xhttp.send(); 
+    }   
 
     //Pass in the ID of any sprite on the board, this method will remove that sprite
     //from the serverBoard. The server will respond with
     //either HTTP200 (OKAY), or HTTP404 (not found). 
     function kill(id){
-        var delUrl = URL + ":9081/Swarm?id=" + id;
+        var delUrl = URL + "?id=" + id;
         var xhttp = new XMLHttpRequest();
         xhttp.open("DELETE", delUrl, true);
         xhttp.send();
@@ -77,16 +80,19 @@ function main(){
                 $('#players').append("<tr id='"+ entity[e].id +"'><td>" + entity[e].id + "</td><td>" + entity[e].x + "</td><td>" + entity[e].y + "</td>");
             }
             else if (entity[e].id.includes("z")){
-                $('#zombies').append("<tr><td>" + entity[e].id + "</td><td>" + entity[e].x + "</td><td>" + entity[e].y + "</td>");
+                $('#zombies').append("<tr id='"+ entity[e].id +"'><td>" + entity[e].id + "</td><td>" + entity[e].x + "</td><td>" + entity[e].y + "</td>");
             }             
         }
-        return entityInfo;
     }
 
     entityInfo(sprites);
 
-    // Manipulate Player Instance
-    var player = $('#p1408');
+    // -- Game Content -- //
+    var canvas = document.getElementById('game');
+    var ctx = canvas.getContext('2d');
+
+    
+
 
     // -- Debugging -- //
 
@@ -98,7 +104,15 @@ function main(){
     //updatePos Test
     //var myChar = new Player("p1776", 100, 100);
     //updatePos(myChar.id, myChar.x, myChar.y);
-
-    // kill Test
+    
+    // Zombie Killswitch
+    $('#killZ').click(function() {
+        var zList = $('#zombies tbody').children();
+        for (z=1; z < zList.length; z++){
+            var zid = zList[z].innerHTML.split("</td><td>")[0].split("<td>")[1];
+            kill(zid);
+        }
+        $.get(host+"/LibertySwarm");
+    });
     //kill("z145");
 }
