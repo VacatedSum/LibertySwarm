@@ -6,6 +6,8 @@ function main(){
     var port = "9081";
     var URL = host + ":" + port + "/Swarm";
 
+    var path = '/LibertySwarm/js/functions.js';
+
     //This class creats all of the 'NPC' sprites.
     //This includes Zombies AND other (remote) players
     class Sprite {
@@ -73,27 +75,100 @@ function main(){
 
     //getBoard Test
     var sprites = getBoard();
+    
 
-    function entityInfo(entity){
-        for (e=0; e < entity.length; e++){
-          if (entity[e].id.includes("p")){
-                $('#players').append("<tr id='"+ entity[e].id +"'><td>" + entity[e].id + "</td><td>" + entity[e].x + "</td><td>" + entity[e].y + "</td>");
+    // -- Game Content -- //
+    function loadGame(){
+        var canvas = document.getElementById('game');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        var ctx = canvas.getContext('2d');
+
+        function entityCircle(x, y, color){
+            ctx.beginPath();
+            ctx.arc(x+20, y+20, 20, 0, 2*Math.PI);
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
+
+        function entityInfo(entity){
+            for (e=0; e < entity.length; e++){
+                if (entity[e].id.includes("p")){
+                    players.push([entity[e].id, entity[e].x, entity[e].y]);
+                }
+                else if (entity[e].id.includes("z")){
+                  //  $('#zombies').append("<tr id='"+ entity[e].id +"'><td>" + entity[e].id + "</td><td>" + entity[e].x + "</td><td>" + entity[e].y + "</td>");
+                //
+                    zombies.push([entity[e].id, entity[e].x, entity[e].y]);
+                }             
             }
-            else if (entity[e].id.includes("z")){
-                $('#zombies').append("<tr id='"+ entity[e].id +"'><td>" + entity[e].id + "</td><td>" + entity[e].x + "</td><td>" + entity[e].y + "</td>");
-            }             
+        }
+
+        var players = [];
+        var zombies = [];
+
+        entityInfo(sprites);    
+
+
+        function entityPosition(entityList, color){
+            for (i=0; i < entityList.length; i++){
+                entityCircle(parseInt(entityList[i][1]), parseInt(entityList[i][2]), color);
+            }
+        }
+
+        entityPosition(players, "blue");
+        entityPosition(zombies, "red");
+
+        function updatePlayer(id, x, y){
+            var u = URL+"?id="+id+"&newX="+x+"&newY="+y;
+            setInterval(function(){
+                $.post(u);
+            },  
+            500);
+        }
+
+        player = players[0];
+        pid = player[0];
+        px = player[1];
+        py = player[2];
+
+        updatePlayer(pid, px, py);
+
+        function keyboardControls(pid, px, py){
+            $('html').keydown(function(event){
+                // Manipulate Player Instance
+
+                // Left
+                if (event.keyCode == "65"){
+                    px = parseInt(px)-1;
+                    updatePlayer(pid, px, py);
+
+                }
+
+                // Up
+                else if (event.keyCode == "87"){
+                    py = parseInt(py)-1;
+                    updatePlayer(pid, px, py);
+                }
+
+                // Right
+                else if (event.keyCode == "68"){
+                    px = parseInt(px)+1;
+                    updatePlayer(pid, px, py);
+                }
+
+                // Down
+                else if (event.keyCode == "83"){
+                    py = parseInt(px)+1;
+                    updatePlayer(pid, px, py);
+                }
+            });
+
         }
     }
 
-    entityInfo(sprites);
-
-    // -- Game Content -- //
-    var canvas = document.getElementById('game');
-    var ctx = canvas.getContext('2d');
-
-    
-
-
+    setInterval(loadGame(), 200);
     // -- Debugging -- //
 
     //console.log(sprites);

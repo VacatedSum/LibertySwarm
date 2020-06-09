@@ -14,10 +14,10 @@ function updatePlayer(id, x, y){
 	setInterval(function(){
 		$.post(u);
 	},	
-	1000);
+	500);
 }
  
-function keyboardControls(){
+function keyboardControls(pid, px, py){
 	$('html').keydown(function(event){
 		// Manipulate Player Instance
 
@@ -50,10 +50,10 @@ function keyboardControls(){
 }
 
 function main(){
-	keyboardControls();
-	updatePlayer(player_id.innerHTML, player_x.innerHTML, player_y.innerHTML);
-	$.get(URL, function(data){
-		console.log(data);
-		}, 'html'
-	);
+	//keyboardControls();
+	//updatePlayer(player_id.innerHTML, player_x.innerHTML, player_y.innerHTML);
+	//$.get(URL, function(data){
+	//	console.log(data);
+	//	}, 'html'
+	//);
 }

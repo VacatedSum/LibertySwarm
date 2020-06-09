@@ -4,7 +4,7 @@ Author: Dominick Piaquadio
 Version: 1.0
 */
 
-html{
+body{
 	margin:0;
 }
 
@@ -25,10 +25,6 @@ table th, table td{
 }
 
 #game{
-	width:50%;
-	height:100%;
-	float:left;
-	margin-right:10%;
 	background-color:black;
 }
 
